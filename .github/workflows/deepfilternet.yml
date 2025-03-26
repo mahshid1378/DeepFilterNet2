@@ -24,8 +24,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install deepfilternet==0.4.0
 
-      - name: Check Installed Packages
-        run: pip list
+      - name: Check if test.wav exists
+        run: ls -R data || echo "data/test.wav not found"
+
+      - name: Create Output Directory
+        run: mkdir -p output
 
       - name: Run DeepFilterNet Demo
-        run: python -m deepfilternet.demo --no_plot --input data/test.wav --output output.wav
+        run: python -m deepfilternet.demo --no_plot --input data/test.wav --output output/output.wav
