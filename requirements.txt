@@ -1,0 +1,6 @@
+torch==1.13
+torchaudio==0.13
+deepfilternet==0.4.0
+matplotlib==3.6
+gradio==3.17
+Pillow==9.3
