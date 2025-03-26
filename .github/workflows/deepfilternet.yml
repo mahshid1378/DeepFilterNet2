@@ -1,33 +1,32 @@
-name: DeepFilterNet2 CI
+name: DeepFilterNet Workflow
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
-  test-deepfilternet:
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
+
+      - name: Check Python Path
+        run: which python
 
       - name: Install dependencies
         run: |
-          sudo apt update
-          sudo apt install -y ffmpeg
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install deepfilternet==0.4.0  # نصب مستقیم اگر فایل requirements.txt نبود
+          fi
 
-      - name: Run model test
-        run: |
-          python -m deepfilternet.demo --no_plot --input data/test.wav --output output.wav
+      - name: Check Installed Packages
+        run: pip list
+
+      - name: Run DeepFilterNet Demo
+        run: python -m deepfilternet.demo --no_plot --input data/test.wav --output output.wav
